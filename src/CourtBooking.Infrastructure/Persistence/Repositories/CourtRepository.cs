@@ -12,6 +12,12 @@ public class CourtRepository : ICourtRepository
         _context = context;
     }
 
+    public async Task AddAsync(Court court)
+    {
+        _context.Courts.Add(court);
+        await _context.SaveChangesAsync();
+    }
+
     public async Task<Court?> GetByIdAsync(Guid id)
     {
         return await _context.Courts.FirstOrDefaultAsync(c => c.Id == id);
