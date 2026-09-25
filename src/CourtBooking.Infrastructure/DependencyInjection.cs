@@ -1,4 +1,7 @@
+using CourtBooking.Domain.Courts;
+using CourtBooking.Domain.Reservations;
 using CourtBooking.Infrastructure.Persistence;
+using CourtBooking.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,6 +15,9 @@ public static class DependencyInjection
     {
         services.AddDbContext<AppDbContext>(options =>
             options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 4, 0))));
+
+        services.AddScoped<ICourtRepository, CourtRepository>();
+        services.AddScoped<IReservationRepository, ReservationRepository>();
 
         return services;
     }
