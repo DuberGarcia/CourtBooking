@@ -8,6 +8,12 @@ public class Court
     public string Name { get; private set; }
     public bool IsActive { get; private set;}
 
+    // Solo para EF Core. Es privado
+    private Court()
+    {
+        Name = null!;
+    }
+
     public Court(string name)
     {
         if(string.IsNullOrWhiteSpace(name)) throw new ArgumentException("El nombre es requerido");

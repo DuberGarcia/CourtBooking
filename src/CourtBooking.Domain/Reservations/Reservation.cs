@@ -8,6 +8,11 @@ public class Reservation
     public TimeRange Period { get; }
     public ReservationStatus Status { get; private set; }  
 
+    // Solo para EF Core. Es privado
+    private Reservation()
+    {
+        Period = null!;
+    }
     internal Reservation(Guid courtId, Guid userId, TimeRange period)
     {
         if(courtId == Guid.Empty) throw new ArgumentException("El Id de la cancha no es valido");
