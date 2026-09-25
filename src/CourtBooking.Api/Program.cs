@@ -1,4 +1,11 @@
+using CourtBooking.Infrastructure;
+
 var builder = WebApplication.CreateBuilder(args);
+
+var connectionString = builder.Configuration.GetConnectionString("Default")
+    ?? throw new InvalidOperationException("Falta la cadena de conexión 'Default'");
+
+builder.Services.AddInfrastructure(connectionString);
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
