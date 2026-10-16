@@ -9,6 +9,11 @@ public class Reservation
     public TimeRange TimeRange { get; }
     public ReservationStatus Status { get; private set;}
 
+    private Reservation()
+    {
+        TimeRange=null!;
+    }
+
     internal Reservation(Guid courtId,Guid userId,TimeRange range)
     {
         if(courtId == Guid.Empty) throw new DomainException("Id de la cancha no es valido");

@@ -8,6 +8,10 @@ public class Court
     public string Name { get; }
     public bool IsActive { get; private set; }
 
+    private Court()
+    {
+        Name = null!;
+    }
     public Court(string name)
     {
         if(string.IsNullOrWhiteSpace(name)) throw new DomainException("El Nombre de la cancha es obligatorio");
