@@ -15,9 +15,13 @@ public class CourtBookingDbContextFactory : IDesignTimeDbContextFactory<CourtBoo
             ?? throw new InvalidOperationException("Falta la variable de entorno DB_PORT.");
         var name = Environment.GetEnvironmentVariable("DB_NAME")
             ?? throw new InvalidOperationException("Falta la variable de entorno DB_NAME.");
-
+        var user = Environment.GetEnvironmentVariable("DB_USER")
+            ?? throw new InvalidOperationException("Falta la variable de entorno DB_USER.");
+        var password = Environment.GetEnvironmentVariable("DB_PASSWORD")
+                    ?? throw new InvalidOperationException("Falta la variable de entorno DB_PASSWORD.");
+            
         // String interpolation: $"... {variable} ..."
-        var connectionString = $"Server={host};Port={port};Database={name};User=...;Password=...";
+        var connectionString = $"Server={host};Port={port};Database={name};User={user};Password={password}";
 
         var options = new DbContextOptionsBuilder<CourtBookingDbContext>()
             .UseMySql(connectionString, new MySqlServerVersion(new Version(8, 4, 0)))
