@@ -19,7 +19,7 @@ public class ReservationConfiguration : IEntityTypeConfiguration<Reservation>
 
         builder.Property(b => b.UserId).IsRequired();
 
-        builder.Property(b => b.Status).HasConversion<string>();
+        builder.Property(b => b.Status).HasConversion<string>().HasMaxLength(20);
 
         builder.ComplexProperty(b => b.TimeRange, TimeRange =>
         {
