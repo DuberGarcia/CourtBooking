@@ -12,4 +12,10 @@ public class InMemoryCourtRepository : ICourtRepository
         var court = Courts.FirstOrDefault(c => c.Id == id);
         return Task.FromResult(court);
     }
+
+    public Task AddAsync(Court court)
+    {
+        Courts.Add(court);
+        return Task.CompletedTask;
+    }
 }
