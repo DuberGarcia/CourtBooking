@@ -1,3 +1,4 @@
+using System.Text;
 using Api.Errors;
 using Application.Auth.UseCases;
 using Application.Courts.UseCases;
@@ -10,8 +11,14 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("CourtBooking")
     ?? throw new InvalidOperationException("Falta la cadena de conexion 'CourtBooking'");
 
+var jwtOptions = builder.Configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>()
+    ?? throw new InvalidOperationException("Falta la seccion Jwt en la configuracion");
+
+if (Encoding.UTF8.GetByteCount(jwtOptions.Key) < 32)
+    throw new InvalidOperationException("Jwt:key falta o es muy corta");
+
 // Add services to the container.
-builder.Services.AddInfrastructure(connectionString);
+builder.Services.AddInfrastructure(connectionString,jwtOptions);
 builder.Services.AddScoped<CreateCourt>();
 builder.Services.AddScoped<CreateReservation>();
 builder.Services.AddScoped<RegisterUser>();

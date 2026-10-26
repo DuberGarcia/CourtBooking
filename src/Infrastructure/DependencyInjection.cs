@@ -12,7 +12,10 @@ namespace Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, string connectionString)
+    public static IServiceCollection AddInfrastructure(
+        this IServiceCollection services,
+        string connectionString,
+        JwtOptions jwtOptions)
     {
         services.AddDbContext<CourtBookingDbContext>(options =>
             options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 4, 0))));
@@ -29,6 +32,9 @@ public static class DependencyInjection
         .AddEntityFrameworkStores<CourtBookingDbContext>();
 
         services.AddScoped<IIdentityService, IdentityService>();
+
+        services.AddSingleton(jwtOptions);
+        services.AddSingleton<ITokenGenerator, JwtTokenGenerator>();
 
         return services;
     }

@@ -1,5 +1,6 @@
-using System.ComponentModel.DataAnnotations;
 using Application.Auth.Interfaces;
+using Application.Auth.Models;
+using Application.Common.Exceptions;
 using Microsoft.AspNetCore.Identity;
 
 namespace Infrastructure.Identity;
@@ -36,4 +37,18 @@ public class IdentityService : IIdentityService
     private static string ToMessage(IdentityResult result)
         => string.Join(" ", result.Errors.Select(e => e.Description));
 
+    public async Task<UserInfo?> CheckCredentialsAsync(string email, string password)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
+        if (user is null)
+            return null;
+        
+        var passwordOk = await _userManager.CheckPasswordAsync(user, password);
+        if (!passwordOk)
+            return null;
+        
+        IList<string> roles = await _userManager.GetRolesAsync(user);
+
+        return new UserInfo(user.Id, user.Email!, roles.ToList());
+    }
 }
