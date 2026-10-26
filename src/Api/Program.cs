@@ -1,7 +1,9 @@
 using Api.Errors;
+using Application.Auth;
 using Application.Courts;
 using Application.Reservations;
 using Infrastructure;
+using Infrastructure.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,7 @@ var connectionString = builder.Configuration.GetConnectionString("CourtBooking")
 builder.Services.AddInfrastructure(connectionString);
 builder.Services.AddScoped<CreateCourt>();
 builder.Services.AddScoped<CreateReservation>();
+builder.Services.AddScoped<RegisterUser>();
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
@@ -20,6 +23,8 @@ builder.Services.AddProblemDetails();                        // formato estánda
 builder.Services.AddExceptionHandler<AppExceptionHandler>(); // registra tu manejador
 
 var app = builder.Build();
+
+await IdentitySeeder.SeedRolesAsync(app.Services);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

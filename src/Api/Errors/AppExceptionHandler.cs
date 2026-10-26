@@ -19,7 +19,9 @@ public sealed class AppExceptionHandler : IExceptionHandler
         var (status, title) = exception switch
         {
             DomainException => (StatusCodes.Status400BadRequest, "Regla de negocion no cumplida"),
+            ValidationException => (StatusCodes.Status400BadRequest, "Datos inválidos"),
             NotFoundException => (StatusCodes.Status404NotFound, "Recurso no encontrado"),
+            ConflictException   => (StatusCodes.Status409Conflict,   "Conflicto"),
             _ => (0, "")
         };
 
