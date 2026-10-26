@@ -11,7 +11,7 @@ public sealed class CreateCourt
 
     public CreateCourt(ICourtRepository courts)
     {
-        _courts=courts;
+        _courts = courts;
     }
 
     public async Task<Guid> ExecuteAsync(CreateCourtCommand command)

@@ -19,7 +19,7 @@ public class CourtBookingDbContextFactory : IDesignTimeDbContextFactory<CourtBoo
             ?? throw new InvalidOperationException("Falta la variable de entorno DB_USER.");
         var password = Environment.GetEnvironmentVariable("DB_PASSWORD")
                     ?? throw new InvalidOperationException("Falta la variable de entorno DB_PASSWORD.");
-            
+
         // String interpolation: $"... {variable} ..."
         var connectionString = $"Server={host};Port={port};Database={name};User={user};Password={password}";
 

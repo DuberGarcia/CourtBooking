@@ -29,7 +29,7 @@ public class ReservationConfiguration : IEntityTypeConfiguration<Reservation>
 
         builder.HasOne<Court>()
             .WithMany()
-            .HasForeignKey(r=>r.CourtId)
+            .HasForeignKey(r => r.CourtId)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

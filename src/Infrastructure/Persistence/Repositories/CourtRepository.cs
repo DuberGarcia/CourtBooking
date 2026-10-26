@@ -19,6 +19,6 @@ public class CourtRepository : ICourtRepository
 
     public async Task<Court?> GetByIdAsync(Guid id)
     {
-        return await _context.Courts.FirstOrDefaultAsync(c => c.Id==id);
+        return await _context.Courts.FirstOrDefaultAsync(c => c.Id == id);
     }
 }

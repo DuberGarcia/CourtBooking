@@ -7,17 +7,17 @@ public class Reservation
     public Guid CourtId { get; }
     public Guid UserId { get; }
     public TimeRange TimeRange { get; }
-    public ReservationStatus Status { get; private set;}
+    public ReservationStatus Status { get; private set; }
 
     private Reservation()
     {
-        TimeRange=null!;
+        TimeRange = null!;
     }
 
-    internal Reservation(Guid courtId,Guid userId,TimeRange range)
+    internal Reservation(Guid courtId, Guid userId, TimeRange range)
     {
-        if(courtId == Guid.Empty) throw new DomainException("Id de la cancha no es valido");
-        if(userId == Guid.Empty) throw new DomainException("Id del usuario no es valido");
+        if (courtId == Guid.Empty) throw new DomainException("Id de la cancha no es valido");
+        if (userId == Guid.Empty) throw new DomainException("Id del usuario no es valido");
 
         ArgumentNullException.ThrowIfNull(range);
 
@@ -25,7 +25,7 @@ public class Reservation
         CourtId = courtId;
         UserId = userId;
         TimeRange = range;
-        Status=ReservationStatus.Confirmada;
+        Status = ReservationStatus.Confirmada;
     }
     public void Cancelar()
     {
