@@ -23,6 +23,6 @@ public class RegisterUser
 
         if (await _identityService.EmailExistsAsync(email)) throw new ConflictException($"Ya existe una cuenta con el email {email}");
 
-        return await _identityService.CreateUserAsync(email,command.Password,Roles.Customer);
+        return await _identityService.CreateUserAsync(email, command.Password, Roles.Customer);
     }
 }

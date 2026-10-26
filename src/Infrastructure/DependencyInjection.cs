@@ -1,7 +1,7 @@
 using Application.Common;
 using Domain.Courts;
 using Domain.Reservations;
-using Infrastructure.Idenity;
+using Infrastructure.Identity;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Repositories;
 using Microsoft.AspNetCore.Identity;

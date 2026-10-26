@@ -1,7 +1,7 @@
 using Application.Common;
 using Microsoft.AspNetCore.Identity;
 
-namespace Infrastructure.Idenity;
+namespace Infrastructure.Identity;
 
 public class IdentityService : IIdentityService
 {
@@ -17,19 +17,18 @@ public class IdentityService : IIdentityService
     }
     public async Task<Guid> CreateUserAsync(string email, string password, string role)
     {
-        // throw new NotImplementedException();
         var user = new IdentityUser<Guid>
         {
-          Id = Guid.NewGuid(),
-          UserName = email,
-          Email = email  
+            Id = Guid.NewGuid(),
+            UserName = email,
+            Email = email
         };
 
-        IdentityResult created = await _userManager.CreateAsync(user,password);
+        IdentityResult created = await _userManager.CreateAsync(user, password);
         if (!created.Succeeded) throw new ValidationException(ToMessage(created));
 
-        IdentityResult addedToRol = await _userManager.AddToRoleAsync(user,role);
-        if (!addedToRol.Succeeded) throw new InvalidOperationException(ToMessage(created));
+        IdentityResult addedToRole = await _userManager.AddToRoleAsync(user, role);
+        if (!addedToRole.Succeeded) throw new InvalidOperationException(ToMessage(addedToRole));
 
         return user.Id;
     }
