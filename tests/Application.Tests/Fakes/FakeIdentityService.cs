@@ -1,4 +1,4 @@
-using Application.Common;
+using Application.Auth.Interfaces;
 
 namespace Application.Tests.Fakes;
 

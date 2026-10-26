@@ -1,4 +1,5 @@
-using Application.Common;
+using System.ComponentModel.DataAnnotations;
+using Application.Auth.Interfaces;
 using Microsoft.AspNetCore.Identity;
 
 namespace Infrastructure.Identity;

@@ -1,9 +1,9 @@
-using Application.Common;
+using Application.Common.Exceptions;
 using Domain.Common;
 using Domain.Courts;
 using Domain.Reservations;
 
-namespace Application.Reservations;
+namespace Application.Reservations.UseCases;
 
 public record CreateReservationCommand(Guid CourtId, Guid UserId, DateTime Start, DateTime End);
 public class CreateReservation

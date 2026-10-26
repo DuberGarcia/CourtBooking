@@ -1,4 +1,4 @@
-using Application.Reservations;
+using Application.Reservations.UseCases;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;

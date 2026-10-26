@@ -1,7 +1,7 @@
 using Api.Errors;
-using Application.Auth;
-using Application.Courts;
-using Application.Reservations;
+using Application.Auth.UseCases;
+using Application.Courts.UseCases;
+using Application.Reservations.UseCases;
 using Infrastructure;
 using Infrastructure.Identity;
 

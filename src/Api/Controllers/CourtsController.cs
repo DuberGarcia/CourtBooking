@@ -1,4 +1,4 @@
-using Application.Courts;
+using Application.Courts.UseCases;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;

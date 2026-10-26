@@ -1,7 +1,7 @@
 
 using Domain.Courts;
 
-namespace Application.Courts;
+namespace Application.Courts.UseCases;
 
 public sealed record CreateCourtCommand(string Name);
 

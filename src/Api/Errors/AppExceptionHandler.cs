@@ -1,4 +1,4 @@
-using Application.Common;
+using Application.Common.Exceptions;
 using Domain.Common;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;

@@ -1,6 +1,8 @@
-using Application.Common;
+using Application.Auth.Constants;
+using Application.Auth.Interfaces;
+using Application.Common.Exceptions;
 
-namespace Application.Auth;
+namespace Application.Auth.UseCases;
 
 public sealed record RegisterUserCommand(string Email, string Password);
 

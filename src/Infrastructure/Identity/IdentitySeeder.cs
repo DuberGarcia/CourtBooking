@@ -1,4 +1,4 @@
-using Application.Common;
+using Application.Auth.Constants;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 

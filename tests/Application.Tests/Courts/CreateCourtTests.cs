@@ -1,5 +1,5 @@
 // tests/Application.Tests/Courts/CreateCourtTests.cs
-using Application.Courts;
+using Application.Courts.UseCases;
 using Application.Tests.Fakes;
 using Domain.Common;
 

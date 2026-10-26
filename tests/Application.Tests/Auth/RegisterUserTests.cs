@@ -1,5 +1,6 @@
-using Application.Auth;
-using Application.Common;
+using Application.Auth.Constants;
+using Application.Auth.UseCases;
+using Application.Common.Exceptions;
 using Application.Tests.Fakes;
 
 namespace Application.Tests.Auth;

@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using Application.Auth;
+using Application.Auth.UseCases;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;

@@ -1,6 +1,6 @@
 // tests/Application.Tests/Reservations/CreateReservationTests.cs
-using Application.Common;
-using Application.Reservations;
+using Application.Common.Exceptions;
+using Application.Reservations.UseCases;
 using Application.Tests.Fakes;
 using Domain.Common;
 using Domain.Courts;

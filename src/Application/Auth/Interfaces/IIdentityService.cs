@@ -1,4 +1,4 @@
-namespace Application.Common;
+namespace Application.Auth.Interfaces;
 public interface IIdentityService
 {
     Task<bool> EmailExistsAsync(string email);

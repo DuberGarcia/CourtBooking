@@ -1,4 +1,4 @@
-using Application.Common;
+using Application.Auth.Interfaces;
 using Domain.Courts;
 using Domain.Reservations;
 using Infrastructure.Identity;
