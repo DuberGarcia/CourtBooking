@@ -11,12 +11,12 @@ public static class IdentitySeeder
         using var scope = services.CreateScope();
         var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
 
-        string[] roles = [Roles.Admin,Roles.Customer];
+        string[] roles = [Roles.Admin, Roles.Customer];
 
         foreach (var role in roles)
         {
             if (!await roleManager.RoleExistsAsync(role))
-                await roleManager.CreateAsync(new IdentityRole<Guid> {Id = Guid.NewGuid(), Name = role});
+                await roleManager.CreateAsync(new IdentityRole<Guid> { Id = Guid.NewGuid(), Name = role });
         }
-    }   
+    }
 }

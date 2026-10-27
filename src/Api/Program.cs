@@ -18,10 +18,11 @@ if (Encoding.UTF8.GetByteCount(jwtOptions.Key) < 32)
     throw new InvalidOperationException("Jwt:key falta o es muy corta");
 
 // Add services to the container.
-builder.Services.AddInfrastructure(connectionString,jwtOptions);
+builder.Services.AddInfrastructure(connectionString, jwtOptions);
 builder.Services.AddScoped<CreateCourt>();
 builder.Services.AddScoped<CreateReservation>();
 builder.Services.AddScoped<RegisterUser>();
+builder.Services.AddScoped<LoginUser>();
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();

@@ -42,11 +42,11 @@ public class IdentityService : IIdentityService
         var user = await _userManager.FindByEmailAsync(email);
         if (user is null)
             return null;
-        
+
         var passwordOk = await _userManager.CheckPasswordAsync(user, password);
         if (!passwordOk)
             return null;
-        
+
         IList<string> roles = await _userManager.GetRolesAsync(user);
 
         return new UserInfo(user.Id, user.Email!, roles.ToList());

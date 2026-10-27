@@ -1,3 +1,4 @@
+using Application.Auth.Exceptions;
 using Application.Common.Exceptions;
 using Domain.Common;
 using Microsoft.AspNetCore.Diagnostics;
@@ -21,7 +22,8 @@ public sealed class AppExceptionHandler : IExceptionHandler
             DomainException => (StatusCodes.Status400BadRequest, "Regla de negocion no cumplida"),
             ValidationException => (StatusCodes.Status400BadRequest, "Datos inválidos"),
             NotFoundException => (StatusCodes.Status404NotFound, "Recurso no encontrado"),
-            ConflictException   => (StatusCodes.Status409Conflict,   "Conflicto"),
+            ConflictException => (StatusCodes.Status409Conflict, "Conflicto"),
+            InvalidCredentialsException => (StatusCodes.Status401Unauthorized, "Credenciales incorrectas"),
             _ => (0, "")
         };
 
@@ -37,7 +39,7 @@ public sealed class AppExceptionHandler : IExceptionHandler
             {
                 Status = status,
                 Title = title,
-                Detail = exception.Message   // el mensaje que escribiste en el dominio
+                Detail = exception.Message
             }
         });
     }

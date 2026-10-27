@@ -1,29 +1,39 @@
-using System.ComponentModel;
-using Application.Auth;
 using Application.Auth.UseCases;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
 
-public sealed record RegisterUSerRequest(string email, string password);
+public sealed record RegisterUserRequest(string Email, string Password);
+public sealed record LoginUserRequest(string Email, string Password);
 
 [ApiController]
 [Route("api/auth")]
 public class AuthController : ControllerBase
 {
     private readonly RegisterUser _registerUser;
+    private readonly LoginUser _loginUser;
 
-    public AuthController(RegisterUser registerUser)
+    public AuthController(RegisterUser registerUser, LoginUser loginUser)
     {
         _registerUser = registerUser;
+        _loginUser = loginUser;
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Create(RegisterUSerRequest request)
+    public async Task<IActionResult> Register(RegisterUserRequest request)
     {
-        var command = new RegisterUserCommand(request.email,request.password);
+        var command = new RegisterUserCommand(request.Email, request.Password);
         var id = await _registerUser.ExecuteAsync(command);
 
-        return Created($"/api/users/{id}",new {id});
+        return Created($"/api/users/{id}", new { id });
+    }
+
+    [HttpPost("login")]
+    public async Task<IActionResult> Login(LoginUserRequest request)
+    {
+        var command = new LoginUserCommand(request.Email, request.Password);
+        var token = await _loginUser.ExecuteAsync(command);
+
+        return Ok(new { accessToken = token });
     }
 }
