@@ -1,4 +1,5 @@
 using Application.Auth.UseCases;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
@@ -35,5 +36,17 @@ public class AuthController : ControllerBase
         var token = await _loginUser.ExecuteAsync(command);
 
         return Ok(new { accessToken = token });
+    }
+
+    [Authorize]
+    [HttpGet("me")]
+    public IActionResult Me()
+    {
+        return Ok( new
+        {
+            id = User.FindFirst("sub")?.Value,
+            email = User.FindFirst("email")?.Value,
+            roles = User.FindAll("role").Select(c => c.Value)
+        });
     }
 }
