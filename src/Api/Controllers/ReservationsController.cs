@@ -1,4 +1,6 @@
+using Api.Extensions;
 using Application.Reservations.UseCases;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
@@ -6,6 +8,7 @@ namespace Api.Controllers;
 public sealed record CreateReservationRequest(Guid CourtId, DateTime Start, DateTime End);
 
 [ApiController]
+[Authorize]
 [Route("api/reservations")]
 public class ReservationsController : ControllerBase
 {
@@ -17,9 +20,11 @@ public class ReservationsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CreateReservationRequest request, [FromHeader(Name = "X-User-Id")] Guid userId)
+    public async Task<IActionResult> Create(CreateReservationRequest request)
     {
-        var command = new CreateReservationCommand(request.CourtId, userId, request.Start, request.End);
+        var memberId = User.GetUserId();
+
+        var command = new CreateReservationCommand(request.CourtId, memberId, request.Start, request.End);
         var id = await _createReservation.ExecuteAsync(command);
 
         return Created($"/api/reservations/{id}", new { id });
