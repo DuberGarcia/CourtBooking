@@ -23,4 +23,16 @@ public class ReservationRepository : IReservationRepository
             .Where(r => r.CourtId == courtId)
             .ToListAsync();
     }
+
+    public async Task<Reservation?> GetByIdAsync(Guid id)
+    {
+        return await _context.Reservations
+            .FirstOrDefaultAsync(r => r.Id == id);
+    }
+
+    public async Task UpdateAsync(Reservation reservation)
+    {
+        _context.Reservations.Update(reservation);
+        await _context.SaveChangesAsync();
+    }
 }
