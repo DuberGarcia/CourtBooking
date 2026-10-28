@@ -1,4 +1,5 @@
 using Application.Auth.Interfaces;
+using Application.Common.Interfaces;
 using Domain.Courts;
 using Domain.Reservations;
 using Infrastructure.Identity;
@@ -35,6 +36,7 @@ public static class DependencyInjection
 
         services.AddSingleton(jwtOptions);
         services.AddSingleton<ITokenGenerator, JwtTokenGenerator>();
+        services.AddScoped<ITransaction, Transaction>();
 
         return services;
     }

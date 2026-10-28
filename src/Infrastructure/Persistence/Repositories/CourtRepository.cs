@@ -21,4 +21,11 @@ public class CourtRepository : ICourtRepository
     {
         return await _context.Courts.FirstOrDefaultAsync(c => c.Id == id);
     }
+
+    public async Task<Court?> GetByIdForUpdateAsync(Guid id)
+    {
+        return await _context.Courts
+            .FromSqlInterpolated($"SELECT * FROM courts WHERE Id = {id} FOR UPDATE")
+            .FirstOrDefaultAsync();
+    }
 }

@@ -13,12 +13,13 @@ public class CreateReservationTests
     private readonly InMemoryCourtRepository _courts = new();
     private readonly InMemoryReservationRepository _reservations = new();
     private readonly CreateReservation _useCase;
+    private readonly FakeTransaction _transaction = new();
 
     // xUnit crea una instancia nueva de la clase por cada test:
     // cada test arranca con repositorios vacíos.
     public CreateReservationTests()
     {
-        _useCase = new CreateReservation(_courts, _reservations);
+        _useCase = new CreateReservation(_courts, _reservations, _transaction);
     }
 
     private static DateTime At(int hour) => new DateTime(2026, 10, 14, hour, 0, 0);
@@ -87,5 +88,17 @@ public class CreateReservationTests
 
         await Assert.ThrowsAsync<DomainException>(() => _useCase.ExecuteAsync(command));
         Assert.Single(_reservations.Reservations);   // solo la que ya existía
+    }
+    
+    [Fact]
+    public async Task Execute_RunsInsideATransactionAndLocksTheCourt()
+    {
+        var court = SeedCourt();
+        var command = new CreateReservationCommand(court.Id, Guid.NewGuid(), At(17), At(18));
+
+        await _useCase.ExecuteAsync(command);
+
+        Assert.Equal(1, _transaction.RunCount);     // se ejecutó dentro de la transacción
+        Assert.Equal(1, _courts.ForUpdateCalls);    // leyó la cancha con bloqueo
     }
 }

@@ -1,4 +1,5 @@
 using Application.Common.Exceptions;
+using Application.Common.Interfaces;
 using Domain.Common;
 using Domain.Courts;
 using Domain.Reservations;
@@ -10,26 +11,31 @@ public class CreateReservation
 {
     private readonly ICourtRepository _courts;
     private readonly IReservationRepository _reservations;
+    private readonly ITransaction _transaction;
 
-    public CreateReservation(ICourtRepository courts, IReservationRepository reservations)
+    public CreateReservation(ICourtRepository courts, IReservationRepository reservations,ITransaction transaction)
     {
         _courts = courts;
         _reservations = reservations;
+        _transaction = transaction;
     }
 
     public async Task<Guid> ExecuteAsync(CreateReservationCommand command)
     {
-        var range = new TimeRange(command.Start, command.End);
+        return await _transaction.RunAsync(async () =>
+        {
+            var range = new TimeRange(command.Start, command.End);
 
-        var court = await _courts.GetByIdAsync(command.CourtId);
-        if (court is null) throw new NotFoundException("No se encontro la cancha");
+            var court = await _courts.GetByIdForUpdateAsync(command.CourtId);
+            if (court is null) throw new NotFoundException("No se encontro la cancha");
 
-        var reservations = await _reservations.GetByCourtAsync(court.Id);
+            var reservations = await _reservations.GetByCourtAsync(court.Id);
 
-        var reservation = court.Reserve(command.UserId, range, reservations);
+            var reservation = court.Reserve(command.UserId, range, reservations);
 
-        await _reservations.AddAsync(reservation);
+            await _reservations.AddAsync(reservation);
 
-        return reservation.Id;
+            return reservation.Id;
+        });
     }
 }
