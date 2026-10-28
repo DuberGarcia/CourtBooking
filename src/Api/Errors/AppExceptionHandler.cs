@@ -24,6 +24,7 @@ public sealed class AppExceptionHandler : IExceptionHandler
             NotFoundException => (StatusCodes.Status404NotFound, "Recurso no encontrado"),
             ConflictException => (StatusCodes.Status409Conflict, "Conflicto"),
             InvalidCredentialsException => (StatusCodes.Status401Unauthorized, "Credenciales incorrectas"),
+            ForbiddenException => (StatusCodes.Status403Forbidden,"No tienes permiso"),
             _ => (0, "")
         };
 

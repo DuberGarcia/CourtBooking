@@ -46,6 +46,7 @@ builder.Services
 builder.Services.AddInfrastructure(connectionString, jwtOptions);
 builder.Services.AddScoped<CreateCourt>();
 builder.Services.AddScoped<CreateReservation>();
+builder.Services.AddScoped<CancelReservation>();
 builder.Services.AddScoped<RegisterUser>();
 builder.Services.AddScoped<LoginUser>();
 builder.Services.AddControllers();

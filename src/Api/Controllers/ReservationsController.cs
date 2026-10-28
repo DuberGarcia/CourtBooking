@@ -1,6 +1,8 @@
 using Api.Extensions;
+using Application.Auth.Constants;
 using Application.Reservations.UseCases;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
@@ -13,10 +15,12 @@ public sealed record CreateReservationRequest(Guid CourtId, DateTime Start, Date
 public class ReservationsController : ControllerBase
 {
     private readonly CreateReservation _createReservation;
+    private readonly CancelReservation _cancelReservation;
 
-    public ReservationsController(CreateReservation createReservation)
+    public ReservationsController(CreateReservation createReservation, CancelReservation cancelReservation)
     {
         _createReservation = createReservation;
+        _cancelReservation = cancelReservation;
     }
 
     [HttpPost]
@@ -28,5 +32,17 @@ public class ReservationsController : ControllerBase
         var id = await _createReservation.ExecuteAsync(command);
 
         return Created($"/api/reservations/{id}", new { id });
+    }
+
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var userId = User.GetUserId();
+        var isAdmin = User.IsInRole(Roles.Admin);
+
+        var command = new CancelReservationCommand(id,userId,isAdmin);
+        await _cancelReservation.ExecuteAsync(command);
+
+        return NoContent();
     }
 }
