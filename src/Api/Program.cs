@@ -58,6 +58,10 @@ builder.Services.AddExceptionHandler<AppExceptionHandler>(); // registra tu mane
 var app = builder.Build();
 
 await IdentitySeeder.SeedRolesAsync(app.Services);
+await IdentitySeeder.SeedAdminAsybc(
+    app.Services,
+    app.Configuration["Admin:Email"],
+    app.Configuration["Admin:Password"]);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -1,4 +1,6 @@
+using Application.Auth.Constants;
 using Application.Courts.UseCases;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
@@ -15,6 +17,7 @@ public class CourtsController : ControllerBase
         _createCourt = createCourt;
     }
 
+    [Authorize(Roles = Roles.Admin)]
     [HttpPost]
     public async Task<IActionResult> Create(CreateCourtRequest request)
     {
