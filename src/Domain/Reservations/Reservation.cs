@@ -27,10 +27,13 @@ public class Reservation
         TimeRange = range;
         Status = ReservationStatus.Confirmada;
     }
-    public void Cancelar()
+    public void Cancelar(DateTime now)
     {
         if (Status == ReservationStatus.Cancelada)
             throw new DomainException("La reserva ya fue cancelada.");
+
+        if (now >= TimeRange.Start)
+            throw new DomainException("La reserva ya Inicio.");
 
         Status = ReservationStatus.Cancelada;
     }

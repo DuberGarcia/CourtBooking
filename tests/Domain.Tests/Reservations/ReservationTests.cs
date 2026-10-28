@@ -64,7 +64,7 @@ public class ReservationTests
     {
         var reservation = ValidReservation();
 
-        reservation.Cancelar();
+        reservation.Cancelar(new DateTime(2026, 10, 13, 16, 0, 0));
 
         Assert.Equal(ReservationStatus.Cancelada, reservation.Status);
     }
@@ -73,8 +73,32 @@ public class ReservationTests
     public void Cancelar_WhenAlreadyCancelled_ThrowsDomainException()
     {
         var reservation = ValidReservation();
-        reservation.Cancelar();
+        reservation.Cancelar(new DateTime(2026, 10, 13, 16, 0, 0));
 
-        Assert.Throws<DomainException>(() => reservation.Cancelar());
+        Assert.Throws<DomainException>(() => reservation.Cancelar(new DateTime(2026, 10, 13, 16, 0, 0)));
+    }
+        // ValidRange() es 13 oct, 17:00–18:00
+
+    [Fact]
+    public void Cancelar_OneMinuteBeforeStart_ChangesStatusToCancelada()
+    {
+        var reservation = ValidReservation();
+
+        reservation.Cancelar(new DateTime(2026, 10, 13, 16, 59, 0));
+
+        Assert.Equal(ReservationStatus.Cancelada, reservation.Status);
+    }
+
+    [Theory]
+    [InlineData(17, 0)]    // justo a la hora de inicio
+    [InlineData(17, 30)]   // en curso
+    [InlineData(19, 0)]    // ya terminó
+    public void Cancelar_WhenAlreadyStarted_ThrowsAndStaysConfirmed(int hour, int minute)
+    {
+        var reservation = ValidReservation();
+        var now = new DateTime(2026, 10, 13, hour, minute, 0);
+
+        Assert.Throws<DomainException>(() => reservation.Cancelar(now));
+        Assert.Equal(ReservationStatus.Confirmada, reservation.Status);   // no cambió nada
     }
 }

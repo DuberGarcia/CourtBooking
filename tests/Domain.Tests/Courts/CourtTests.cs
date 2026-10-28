@@ -94,7 +94,7 @@ public class CourtTests
     {
         var court = new Court("Cancha 1");
         var existing = court.Reserve(Guid.NewGuid(), Range(17, 19), []);
-        existing.Cancelar();
+        existing.Cancelar(new DateTime(2026, 10, 14, 16, 0, 0));
 
         var reservation = court.Reserve(Guid.NewGuid(), Range(18, 20), [existing]);
 
