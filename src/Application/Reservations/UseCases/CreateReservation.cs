@@ -29,7 +29,7 @@ public class CreateReservation
             var court = await _courts.GetByIdForUpdateAsync(command.CourtId);
             if (court is null) throw new NotFoundException("No se encontro la cancha");
 
-            var reservations = await _reservations.GetByCourtAsync(court.Id);
+            var reservations = await _reservations.GetConfirmedOverlappingAsync(court.Id, range);
 
             var reservation = court.Reserve(command.UserId, range, reservations);
 

@@ -1,3 +1,4 @@
+using Domain.Common;
 using Domain.Reservations;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,11 +17,14 @@ public class ReservationRepository : IReservationRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<IReadOnlyList<Reservation>> GetByCourtAsync(Guid courtId)
+    public async Task<IReadOnlyList<Reservation>> GetConfirmedOverlappingAsync(Guid courtId,TimeRange range)
     {
         return await _context.Reservations
             .AsNoTracking()
-            .Where(r => r.CourtId == courtId)
+            .Where(r => r.CourtId == courtId
+                && r.Status ==ReservationStatus.Confirmada
+                && r.TimeRange.Start < range.End
+                && r.TimeRange.End > range.Start )
             .ToListAsync();
     }
 

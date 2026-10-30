@@ -1,4 +1,5 @@
 // tests/Application.Tests/Fakes/InMemoryReservationRepository.cs
+using Domain.Common;
 using Domain.Reservations;
 
 namespace Application.Tests.Fakes;
@@ -10,9 +11,13 @@ public class InMemoryReservationRepository : IReservationRepository
     // Reservas que el caso de uso mandó a guardar con UpdateAsync (en orden)
     public List<Reservation> Updated { get; } = [];
 
-    public Task<IReadOnlyList<Reservation>> GetByCourtAsync(Guid courtId)
+    public Task<IReadOnlyList<Reservation>> GetConfirmedOverlappingAsync(Guid courtId, TimeRange range)
     {
-        var result = Reservations.Where(r => r.CourtId == courtId).ToList();
+        var result = Reservations
+            .Where(r => r.CourtId == courtId
+                && r.Status == ReservationStatus.Confirmada
+                && r.TimeRange.Overlaps(range))
+            .ToList();
         return Task.FromResult<IReadOnlyList<Reservation>>(result);
     }
 
