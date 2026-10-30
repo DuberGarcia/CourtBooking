@@ -90,4 +90,20 @@ public class GetAvailabilityTests
         var slot = Assert.Single(result.OccupiedSlots);
         Assert.Equal(new OccupiedSlot(At(23, -1), At(1)), slot);
     }
+
+    [Fact]
+    public async Task Execute_WithoutDate_UsesTodayInColombia()
+    {
+        var court = SeedCourt();
+        var now = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, "America/Bogota");
+        var today = DateOnly.FromDateTime(now);
+        var todayAt10 = today.ToDateTime(new TimeOnly(10, 0));     // hoy 10:00
+        SeedReservation(court, todayAt10, todayAt10.AddHours(1));  // hoy 10:00–11:00
+
+        var result = await _useCase.ExecuteAsync(new GetAvailabilityQuery(court.Id, null));
+
+        Assert.Equal(today, result.Date);
+        var slot = Assert.Single(result.OccupiedSlots);
+        Assert.Equal(new OccupiedSlot(todayAt10, todayAt10.AddHours(1)), slot);
+    }
 }

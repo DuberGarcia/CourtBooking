@@ -49,6 +49,7 @@ builder.Services.AddScoped<CreateReservation>();
 builder.Services.AddScoped<CancelReservation>();
 builder.Services.AddScoped<RegisterUser>();
 builder.Services.AddScoped<LoginUser>();
+builder.Services.AddScoped<GetAvailability>();
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();

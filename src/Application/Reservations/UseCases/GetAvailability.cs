@@ -5,11 +5,12 @@ using Domain.Courts;
 using Domain.Reservations;
 
 namespace Application.Reservations.UseCases;
-public sealed record GetAvailabilityQuery(Guid CourtId, DateOnly Date);
+public sealed record GetAvailabilityQuery(Guid CourtId, DateOnly? Date);
 public class GetAvailability
 {
     private readonly ICourtRepository _courts;
     private readonly IReservationRepository _reservations;
+    private const string ColombiaTimeZone = "America/Bogota";
 
     public GetAvailability(ICourtRepository courts, IReservationRepository reservations)
     {
@@ -17,13 +18,16 @@ public class GetAvailability
         _reservations = reservations;
     }
 
-    public async Task<CourtAvailability> ExecuteAsync(GetAvailabilityQuery command)
+    public async Task<CourtAvailability> ExecuteAsync(GetAvailabilityQuery query)
     {
-        var court = await _courts.GetByIdAsync(command.CourtId);
+        var court = await _courts.GetByIdAsync(query.CourtId);
         if (court is null)
             throw new NotFoundException("No se encontro la cancha");
 
-        var dayStart = command.Date.ToDateTime(TimeOnly.MinValue);
+        var now = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, ColombiaTimeZone);
+        var date = query.Date ?? DateOnly.FromDateTime(now);
+
+        var dayStart = date.ToDateTime(TimeOnly.MinValue);
         var range = new TimeRange(dayStart,dayStart.AddDays(1));
 
         var reservations = await _reservations.GetConfirmedOverlappingAsync(court.Id, range);
@@ -33,6 +37,6 @@ public class GetAvailability
             .Select(r => new OccupiedSlot(r.TimeRange.Start, r.TimeRange.End))
             .ToList();
         
-        return new CourtAvailability(court.Id,command.Date,OccupiedSlots);
+        return new CourtAvailability(court.Id,date,OccupiedSlots);
     }
 }
